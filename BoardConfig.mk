@@ -28,6 +28,10 @@ ODM_MANIFEST_COURBET_FILES := \
     $(COMMON_PATH)/configs/hidl/manifest-qva.xml \
     $(DEVICE_PATH)/configs/hidl/manifest-nfc.xml
 
+# Init
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_courbet
+TARGET_RECOVERY_DEVICE_MODULES := libinit_courbet
+
 # Kernel
 TARGET_KERNEL_CONFIG := courbet_defconfig
 TARGET_KERNEL_CLANG_VERSION := proton
