@@ -27,42 +27,125 @@
    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <cstdlib>
 #include <fstream>
+#include <string.h>
 #include <unistd.h>
 #include <vector>
 
 #include <android-base/properties.h>
 #define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
 #include <sys/_system_properties.h>
+#include <sys/sysinfo.h>
 
 #include "property_service.h"
 #include "vendor_init.h"
 
 using android::base::GetProperty;
+using std::string;
+
+std::vector<std::string> ro_props_default_source_order = {
+    "",
+    "odm.",
+    "product.",
+    "system.",
+    "system_ext.",
+    "vendor.",
+};
 
 void property_override(char const prop[], char const value[], bool add = true) {
     prop_info *pi;
 
     pi = (prop_info *)__system_property_find(prop);
-    if (pi) {
+    if (pi)
         __system_property_update(pi, value, strlen(value));
-    } else if (add) {
+    else if (add)
         __system_property_add(prop, strlen(prop), value, strlen(value));
+}
+
+void load_dalvik_properties() {
+    struct sysinfo sys;
+
+    sysinfo(&sys);
+    if (sys.totalram >= 3ull * 1024 * 1024 * 1024) {
+        // from - phone-xhdpi-4096-dalvik-heap.mk
+        property_override("dalvik.vm.heapstartsize", "8m");
+        property_override("dalvik.vm.heapgrowthlimit", "192m");
+        property_override("dalvik.vm.heapsize", "512m");
+        property_override("dalvik.vm.heaptargetutilization", "0.6");
+        property_override("dalvik.vm.heapminfree", "8m");
+        property_override("dalvik.vm.heapmaxfree", "16m");
+
+    } else if (sys.totalram < 6144ull * 1024 * 1024) {
+        // from - phone-xhdpi-6144-dalvik-heap.mk
+        property_override("dalvik.vm.heapstartsize", "16m");
+        property_override("dalvik.vm.heapgrowthlimit", "256m");
+        property_override("dalvik.vm.heapsize", "512m");
+        property_override("dalvik.vm.heapmaxfree", "32m");
+        property_override("dalvik.vm.heaptargetutilization", "0.5");
+        property_override("dalvik.vm.heapminfree", "8m");
+
+    } else {
+        // 8GB & 12GB RAM
+        property_override("dalvik.vm.heapstartsize", "32m");
+        property_override("dalvik.vm.heapgrowthlimit", "512m");
+        property_override("dalvik.vm.heapsize", "768m");
+        property_override("dalvik.vm.heapmaxfree", "64m");
+        property_override("dalvik.vm.heaptargetutilization", "0.5");
+        property_override("dalvik.vm.heapminfree", "8m");
     }
 }
 
-void full_property_override(const std::string &prop, const char value[]) {
-    const int prop_count = 6;
-    const std::vector<std::string> prop_types
-        {"", "odm.", "product.", "system.", "system_ext.", "vendor."};
+void set_device_props(const std::string brand, const std::string device, const std::string model,
+        const std::string name, const std::string marketname) {
+    const auto set_ro_build_prop = [](const std::string &source,
+                                      const std::string &prop,
+                                      const std::string &value) {
+        auto prop_name = "ro." + source + "build." + prop;
+        property_override(prop_name.c_str(), value.c_str(), true);
+    };
 
-    for (int i = 0; i < prop_count; i++) {
-        std::string prop_name = "ro." + prop_types[i] + prop;
-        property_override(prop_name.c_str(), value);
+    const auto set_ro_product_prop = [](const std::string &source,
+                                        const std::string &prop,
+                                        const std::string &value) {
+        auto prop_name = "ro.product." + source + prop;
+        property_override(prop_name.c_str(), value.c_str(), true);
+    };
+
+    for (const auto &source : ro_props_default_source_order) {
+        set_ro_product_prop(source, "brand", brand);
+        set_ro_product_prop(source, "device", device);
+        set_ro_product_prop(source, "model", model);
+        set_ro_product_prop(source, "name", name);
+        set_ro_product_prop(source, "marketname", marketname);
     }
+
+    property_override("ro.com.google.clientidbase", "android-xiaomi");
+    property_override("ro.com.google.clientidbase.ax", "android-xiaomi-rvo3");
+    property_override("ro.com.google.clientidbase.ms", "android-xiaomi-rvo3");
+    property_override("ro.com.google.clientidbase.tx", "android-xiaomi-rvo3");
+    property_override("ro.com.google.clientidbase.vs", "android-xiaomi-rvo3");
+
 }
 
 void vendor_load_properties() {
+    string region = android::base::GetProperty("ro.boot.hwc", "");
+
+    if (region == "INDIA") {
+        set_device_props(
+            "Xiaomi", "courbetin", "M2101K9AI", "courbet_in_global", "Mi 11 Lite");
+        property_override("ro.product.mod_device", "courbet_in_global");
+    } else {
+        set_device_props(
+            "Xiaomi", "courbet", "M2101K9AG", "courbet_global", "Mi 11 Lite");
+        property_override("ro.product.mod_device", "courbet_global");
+    }
+
+    load_dalvik_properties();
+
+//  SafetyNet workaround
     property_override("ro.boot.verifiedbootstate", "green");
-    property_override("ro.boot.flash.locked", "1");
+    property_override("ro.oem_unlock_supported", "0");
+//  Enable transitional log for Privileged permissions
+    property_override("ro.control_privapp_permissions", "log");
 }
