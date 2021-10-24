@@ -16,8 +16,6 @@
 */
 -->
 <resources>
-    <dimen name="rounded_corner_content_padding">47.0px</dimen>
-
     <!-- Doze: check proximity sensor before pulsing? -->
     <bool name="doze_proximity_check_before_pulse">false</bool>
 
@@ -31,4 +29,11 @@
 
     <dimen name="physical_power_button_center_screen_location_y">10670px</dimen>
     <dimen name="physical_fingerprint_sensor_center_screen_location_y">1067px</dimen>
+    
+    <!-- Default rounded corner curve (a Bezier). Must match (the curved path in) rounded.xml.
+         Note that while rounded.xml includes the entire path (including the horizontal and vertical
+         corner edges), this pulls out just the curve.-->
+    <string name="config_rounded_mask" translatable="false">M146,0 C100,2 60,0 30,30 C0,60 2,100 0,146</string>
+
+    <bool name="config_roundedCornerMultipleRadius">true</bool>
 </resources>
