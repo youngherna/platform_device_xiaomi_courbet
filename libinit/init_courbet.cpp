@@ -119,11 +119,11 @@ void vendor_load_properties() {
 
     if (region == "INDIA") {
         set_device_props(
-            "Xiaomi", "courbetin", "M2101K9AI", "courbet_in_global", "Mi 11 Lite");
+            "Xiaomi", "courbetin", "M2101K9AI", "courbet_in_global", "Mi 11 Lite 4G");
         property_override("ro.product.mod_device", "courbet_in_global");
     } else {
         set_device_props(
-            "Xiaomi", "courbet", "M2101K9AG", "courbet_global", "Mi 11 Lite");
+            "Xiaomi", "courbet", "M2101K9AG", "courbet_global", "Mi 11 Lite 4G");
         property_override("ro.product.mod_device", "courbet_global");
     }
 
