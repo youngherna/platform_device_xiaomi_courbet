@@ -25,4 +25,4 @@
          in its natural orientation. If zero, the value of rounded_corner_radius is used. -->
     <dimen name="config_rounded_mask_size_top">146px</dimen>
     <dimen name="config_rounded_mask_size_bottom">146px</dimen>
-</resources> 
+</resources>
