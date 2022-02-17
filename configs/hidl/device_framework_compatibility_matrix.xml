@@ -142,6 +142,14 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <instance>default</instance>
     </interface>
 </hal>
+<hal format="hidl">
+     <name>vendor.nxp.nxpnfc</name>
+     <version>1.0</version>
+     <interface>
+         <name>INxpNfc</name>
+         <instance>default</instance>
+     </interface>
+</hal>
 <hal format="hidl" optional="true">
     <name>vendor.goodix.hardware.biometrics.fingerprint</name>
     <version>2.0-1</version>
@@ -391,6 +399,23 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <interface>
         <name>IWifiDisplaySessionVideoTrack</name>
         <instance>wifidisplaysessionvideotrack</instance>
+    </interface>
+</hal>
+<hal format="hidl" optional="true">
+    <name>vendor.qti.hardware.wifi.supplicant</name>
+    <version>2.2</version>
+    <interface>
+        <name>ISupplicantVendor</name>
+        <instance>default</instance>
+    </interface>
+</hal>
+<hal format="hidl" optional="true">
+    <name>vendor.qti.hardware.wifi.hostapd</name>
+    <version>1.2</version>
+    <interface>
+         <name>IHostapdVendor</name>
+         <instance>default</instance>
+         <instance>wigighostapd</instance>
     </interface>
 </hal>
 <hal format="hidl" optional="true">
