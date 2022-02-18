@@ -269,6 +269,14 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </interface>
 </hal>
 <hal format="hidl" optional="true">
+        <name>vendor.qti.hardware.iop</name>
+        <version>2.0</version>
+        <interface>
+            <name>IIop</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+<hal format="hidl" optional="true">
     <name>vendor.qti.hardware.dsp</name>
     <version>1.0</version>
     <interface>
@@ -284,6 +292,14 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <instance>default</instance>
     </interface>
 </hal>
+<hal format="hidl" optional="true">
+        <name>vendor.qti.hardware.perf</name>
+        <version>2.0-2</version>
+        <interface>
+            <name>IPerf</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
 <hal format="hidl" optional="true">
     <name>vendor.qti.hardware.radio.am</name>
     <version>1.0</version>
@@ -365,6 +381,14 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <instance>uimRemoteServer1</instance>
     </interface>
 </hal>
+ <hal format="hidl" optional="true">
+        <name>vendor.qti.hardware.servicetracker</name>
+        <version>1.0-2</version>
+        <interface>
+            <name>IServicetracker</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
 <hal format="hidl" optional="true">
     <name>vendor.qti.hardware.soter</name>
     <version>1.0</version>
@@ -442,4 +466,13 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <instance>imsrtpservice</instance>
     </interface>
 </hal>
+<hal format="hidl" optional="true">
+        <name>vendor.qti.memory.pasrmanager</name>
+        <transport>hwbinder</transport>
+        <version>1.0-1</version>
+        <interface>
+            <name>IPasrManager</name>
+            <instance>pasrhal</instance>
+        </interface>
+    </hal>
 </compatibility-matrix>
