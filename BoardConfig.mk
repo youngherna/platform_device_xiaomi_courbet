@@ -35,6 +35,8 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_courbet
 # Kernel
 TARGET_KERNEL_CONFIG := courbet_defconfig
 TARGET_KERNEL_CLANG_VERSION := proton
+TARGET_KERNEL_ADDITIONAL_FLAGS := \
+    HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument"
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
