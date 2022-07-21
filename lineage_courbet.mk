@@ -12,10 +12,26 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, device/xiaomi/courbet/device.mk)
 
 # Inherit some common Lineage stuff.
-$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
+$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 TARGET_SUPPORTS_QUICK_TAP := true
 
-PRODUCT_NAME := aosp_courbet
+# disable/enable blur support, default is false
+TARGET_ENABLE_BLUR := true
+
+# gapps build flag, if not defined build type is vanilla
+# GAPPS package is similar to core gapps
+WITH_GMS := true
+
+# maintainer flag
+RICE_MAINTAINER := yghernan
+
+#Face unlock 
+TARGET_FACE_UNLOCK_SUPPORTED := true
+
+# Boot animation
+TARGET_BOOT_ANIMATION_RES := 1080
+
+PRODUCT_NAME := lineage_courbet
 PRODUCT_DEVICE := courbet
 PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := Mi 11 Lite 4G
